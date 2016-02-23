@@ -8,8 +8,14 @@ files:
 	
 installation steps:
 
-1) install AdafruitDHT library: https://learn.adafruit.com/dht-humidity-sensing-on-raspberry-pi-with-gdocs-logging/wiring
-2) install mysql: sudo apt-get install mysql-server mysql-client
+1) install AdafruitDHT library:
+
+	https://learn.adafruit.com/dht-humidity-sensing-on-raspberry-pi-with-gdocs-logging/wiring
+
+2) install mysql:
+
+	#sudo apt-get install mysql-server mysql-client
+
 3) create database:
 
 	#mysql -u root -p
