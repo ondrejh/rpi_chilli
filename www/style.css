@@ -2,7 +2,21 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 0;
-	width: 800px;
+	width: 1300px;
 	font-family: Verdana, Arial, sans-serif;
 	font-size: .8em;
+}
+
+h1 {
+	text-align = center;
+}
+
+img.left {
+	position = relative;
+	left = 0;
+}
+
+img.right {
+	position = relative;
+	right = 0;
 }
