@@ -4,7 +4,11 @@ RPi based chilli greenhouse monitor
 files:
 
 	readhumi.py .. read humidity and temperature from DHT sensor and save in into database
-	gettable.sh .. print out log database table content
+	showdata.py .. get 1 day data from sql and draw the chart
+	plotfile.gp .. plot data gnuplot script
+	
+	runoften.sh .. run readhumi.py and showdata.py to create fresh chart (called every 5 minutes)
+	capture.sh  .. captures camera picture with time stamp (called every 15 minutes)
 	
 installation steps:
 
@@ -32,13 +36,17 @@ installation steps:
 	cd PyMySQL
 	sudo python setup.py install
 	
-5) install apache:
+5) install apache and create dir for image archive:
 
 	sudo apt-get install apache2
 
+	sudo mkdir /var/www/html/archive
+	
 6) create entry in cron table (to make it run every 5 minutes):
 
 	sudo crontab -e
 
-	insert into the last line: "*/ * * * * /home/pi/runoften.sh"
-
+	insert into the last lines: 
+	
+		*/5 * * * * /home/pi/runoften.sh
+		*/15 * * * * /home/pi/capture.sh
