@@ -32,8 +32,13 @@ installation steps:
 	cd PyMySQL
 	sudo python setup.py install
 	
-5) create entry in cron table (to make it run every 5 minutes):
+5) install apache:
+
+	sudo apt-get install apache2
+
+6) create entry in cron table (to make it run every 5 minutes):
 
 	sudo crontab -e
 
-	insert into the last line: "*/ * * * * python /home/pi/readhumi.py"
+	insert into the last line: "*/ * * * * /home/pi/runoften.sh"
+

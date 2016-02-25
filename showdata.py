@@ -41,6 +41,8 @@ with connection.cursor() as cur:
     printnice(ret,'{}.tmp'.format(fname))
     subprocess.call('''/usr/bin/gnuplot -e "filename='{}'" /home/pi/plotfile.gp'''.format(fname),shell=True)
 
+    subprocess.call('''cp {}.png /var/www/html/humi.png'''.format(fname),shell=True)
+
     cur.close()
 
 connection.close()
