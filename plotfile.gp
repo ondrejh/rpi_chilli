@@ -6,8 +6,8 @@ set term png size 640,480
 set timefmt "%Y-%m-%d %H:%M:%S"
 set format x "%H"
 set xlabel "time [h]"
-set ylabel "humidity [%]"
-set y2label "temperature [°C]"
+set y2label "humidity [%]"
+set ylabel "temperature [°C]"
 set autoscale y
 set autoscale y2
 set autoscale x
