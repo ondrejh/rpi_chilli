@@ -10,6 +10,9 @@ files:
 	runoften.sh .. run readhumi.py and showdata.py to create fresh chart (called every 5 minutes)
 	capture.sh  .. captures camera picture with time stamp (called every 15 minutes)
 	
+	lightOn.sh  .. turn light on
+	lightOff.sh .. turn light off
+	
 installation steps:
 
 1) install AdafruitDHT library:
@@ -50,3 +53,6 @@ installation steps:
 	
 		*/5 * * * * /home/pi/runoften.sh
 		*/15 * * * * /home/pi/capture.sh
+		
+		30 4 * * * /home/pi/lightOn.sh
+		30 21 * * * /home/pi/lightOff.sh
