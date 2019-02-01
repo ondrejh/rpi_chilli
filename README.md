@@ -1,7 +1,14 @@
 RPi based chilli greenhouse monitor
 ===================================
 
-###Instalation on Raspbian Stretch Lite:
+#ToDo:
+
+- fan PWM
+- dawn, dusk
+- some doc picture
+- simple schematic
+
+#Instalation on Raspbian Stretch Lite:
 
 Change pasword (but don't forget it).
 
@@ -64,7 +71,7 @@ Setup crontab to run scripts automatically.
 
 	30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
 
-###Backend script files:
+#Backend script files:
 
 - readhumi.py .. read humidity and temperature from DHT sensor and save in into database
 - capture.sh  .. captures camera picture with time stamp
