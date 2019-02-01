@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-''' this should read humidity and temperature from DHT sensor and store it into mysql database
+''' this should read humidity and temperature from DHT sensor and store it into sqlite db file
 to run this every 5 minutes do following:
 	sudo crontab -e
 
@@ -8,31 +8,74 @@ to run this every 5 minutes do following:
 '''
 
 import Adafruit_DHT
-import pymysql.cursors
+import sqlite3
 
 #sensor connection
 pin = 4
 sensor = Adafruit_DHT.AM2302
 
 #database
-db_name = 'chilli'
-table_name = 'logdata'
+db_name = '/var/www/html/sensor.sql'
+table_name = 'data'
 
-humi,temp = Adafruit_DHT.read_retry(sensor,pin)
-#print('{:0.01f}% {:0.01f}*'.format(humi,temp))
 
-if humi>100:
-	humi,temp = Adafruit_DHT.read_retry(sensor,pin)
+def read_values():
 
-if humi<=100:
+	humi, temp = Adafruit_DHT.read_retry(sensor, pin)
 
-	connection = pymysql.connect(host='localhost',user='root',password='1234')
-	connection.autocommit(True)
+	if humi>100:
+		humi, temp = Adafruit_DHT.read_retry(sensor, pin)
 
-	with connection.cursor() as cursor:
-		sql = "INSERT INTO {}.{}(humidity,temperature) VALUES ({:0.1f},{:0.1f})".format(db_name,table_name,humi,temp)
-		#print(sql)
-		cursor.execute(sql)
-		cursor.close()
+	if humi<=100:
+		return humi, temp
 
-	connection.close()
+	return None, None
+
+
+def write_db(db, table, humidity, temperature):
+
+	conn = sqlite3.connect(db)
+	c = conn.cursor()
+
+	query = "CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, humidity REAL, temperature REAL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)".format(table)
+	c.execute(query)
+
+	query = "INSERT INTO {} (temperature, humidity) VALUES ({}, {})".format(table, round(humidity, 2), round(temperature, 2))
+	c.execute(query)
+
+	conn.commit()
+	conn.close()
+
+
+def dump_db(db, table):
+
+	conn = sqlite3.connect(db)
+	c = conn.cursor()
+
+	query = "SELECT * FROM {}".format(table)
+	c.execute(query)
+
+	data = c.fetchall()
+
+	conn.close()
+
+	return data
+
+
+if __name__ == "__main__":
+
+	import sys
+
+	if (len(sys.argv)>1) and sys.argv[1]=='dump':
+		data = dump_db(db_name, table_name)
+		for d in data:
+			print("{} {:.2f}% {:.2f}°C".format(d[3], d[2], d[1]))
+
+	humi, temp = read_values()
+
+	if humi is not None:
+
+		if (len(sys.argv)>1) and sys.argv[1]=='test':
+			print("Humidity: {}\nTemperature: {}".format(round(humi, 2), round(temp, 2)))
+		else:
+			write_db(db_name, table_name, humi, temp)

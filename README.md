@@ -1,6 +1,59 @@
 RPi based chilli greenhouse monitor
 ===================================
 
+newsetup (1.2.2019):
+
+install:
+
+	# change pasword, update system, enable webcam and ssh
+
+	passwd
+	sudo apt-get update
+	sudo apt-get upgrade
+	sudo raspi-config
+
+	# install packages:
+	# git .. get repository
+	# python3_pip .. install python libraries
+	# apache2 .. web server
+	# wiringpi .. switch on - off light and fan
+
+	sudo apt-get install git python3_pip apache2 wiringpi
+
+	# install python library (dht)
+
+	sudo pip3 install adafruit_dht
+
+	# get rpi_chilli repository
+	git clone https://github.com/ondrejh/rpi_chilli.git
+
+	# test ios
+	./lightOn.sh
+	./lightOff.sh
+	./fanOn.sh
+	./fanOff.sh
+
+	# install web pages
+	sudo cp www/* /var/www/html/
+
+	# test webcam (enable in raspi-config first)
+	sudo ./capture.sh	
+
+	# set crontab
+	sudo crontab -c
+	# add lines:
+	#
+	#   */15 * * * * /home/pi/rpi_chilli/readhumi.py
+	#
+	#   0 6 * * * /home/pi/rpi_chilli/lightOn.sh
+	#   0 21 * * * /home/pi/rpi_chilli/lightOff.sh
+
+	#   0 7,10,13,15,17,19 * * * /home/pi/rpi_chilli/fanOn.sh
+	#   15 7,10,13,15,17,19 * * * /home/pi/rpi_chilli/fanOff.sh
+
+	#   30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
+
+
 files:
 
 	readhumi.py .. read humidity and temperature from DHT sensor and save in into database
