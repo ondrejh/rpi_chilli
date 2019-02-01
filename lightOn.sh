@@ -1,4 +1,6 @@
 #!/bin/bash
 
-gpio mode 3 out
-gpio write 3 1
+# light: gpio_gen2 ~ gpio27, active 1
+
+gpio mode 2 out
+gpio write 2 1
