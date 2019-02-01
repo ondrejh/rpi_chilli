@@ -50,30 +50,9 @@ def write_db(db, table, humidity, temperature):
 	conn.close()
 
 
-def dump_db(db, table):
-
-	conn = sqlite3.connect(db)
-	c = conn.cursor()
-
-	query = "SELECT * FROM {}".format(table)
-	c.execute(query)
-
-	data = c.fetchall()
-
-	conn.close()
-
-	return data
-
-
 if __name__ == "__main__":
 
 	import sys
-
-	if (len(sys.argv) > 1) and sys.argv[1] == 'dump':
-		data = dump_db(db_name, table_name)
-		for d in data:
-			print("{} {:.2f}% {:.2f}°C".format(d[3], d[2], d[1]))
-		exit()
 
 	h, t = read_values()
 

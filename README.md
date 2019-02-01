@@ -64,7 +64,7 @@ Setup crontab to run scripts automatically.
 
 	30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
 
-###Backend script files description:
+###Backend script files:
 
 - readhumi.py .. read humidity and temperature from DHT sensor and save in into database
 - capture.sh  .. captures camera picture with time stamp
