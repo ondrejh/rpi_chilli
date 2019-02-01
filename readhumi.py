@@ -70,6 +70,7 @@ if __name__ == "__main__":
 		data = dump_db(db_name, table_name)
 		for d in data:
 			print("{} {:.2f}% {:.2f}°C".format(d[3], d[2], d[1]))
+		exit()
 
 	humi, temp = read_values()
 
