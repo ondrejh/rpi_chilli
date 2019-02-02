@@ -1,20 +1,13 @@
 RPi based chilli seeds greenhouse monitor
 =========================================
 
-### Hardware:
+## Hardware:
 
 BOM: Raspberry PI, Rpi camera, FPV BEC, 12V white LED strips, 12V cooling fan, NPN transistors, resistors, DHT22 humidity sensor, 12V power supply, seed starter greenhouse 
 
 ![Fritzing schematic - colorfull and useless](/doc/schema.png)
 
-### ToDo:
-
-- fan PWM
-- dawn, dusk
-- some doc picture
-- simple schematic
-
-### Instalation on Raspbian Stretch Lite:
+## Instalation on Raspbian Stretch (Lite):
 
 Change pasword (but don't forget it).
 
@@ -77,7 +70,7 @@ Setup crontab to run scripts automatically.
 
 	30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
 
-### Backend script files:
+## Backend script files:
 
 - readhumi.py .. read humidity and temperature from DHT sensor and save in into database
 - capture.sh  .. captures camera picture with time stamp
@@ -85,3 +78,10 @@ Setup crontab to run scripts automatically.
 - lightOff.sh .. turn light off
 - fanOn.sh    .. turn fan on
 - fanOff.sh   .. turn fan off
+
+## ToDo:
+
+- fan PWM
+- dawn, dusk
+- some doc picture
+- simple schematic

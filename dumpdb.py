@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-""" this is just help function to see if db storing works well """
+""" dump db to see if data storing works well """
 
 import sqlite3
 import sys
@@ -37,4 +37,3 @@ if __name__ == "__main__":
         for d in data:
             print("{} {:.2f}% {:.2f}°C".format(d[3], d[2], d[1]))
         exit()
-
