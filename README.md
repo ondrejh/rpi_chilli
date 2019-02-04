@@ -54,7 +54,7 @@ Test light, fan and camera.
 
 	sudo ./capture.sh	
 
-Setup crontab to run scripts automatically (beware its UTC).
+Setup crontab to run scripts automatically.
 
 	sudo crontab -c
 	
@@ -62,13 +62,13 @@ Setup crontab to run scripts automatically (beware its UTC).
 
 	*/15 * * * * /home/pi/rpi_chilli/readhumi.py
 	
-	0 5 * * * /home/pi/rpi_chilli/lightOn.sh
-	0 20 * * * /home/pi/rpi_chilli/lightOff.sh
+	0 6 * * * /home/pi/rpi_chilli/lightOn.sh
+	0 21 * * * /home/pi/rpi_chilli/lightOff.sh
     
-	0 6,9,12,15,18 * * * /home/pi/rpi_chilli/fanOn.sh
-	15 6,9,12,15,18 * * * /home/pi/rpi_chilli/fanOff.sh
+	0 7,10,13,16,19 * * * /home/pi/rpi_chilli/fanOn.sh
+	15 7,10,13,16,19 * * * /home/pi/rpi_chilli/fanOff.sh
 
-	30 6,9,12,15,18 * * * /home/pi/rpi_chilli/capture.sh
+	30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
 
 ## Backend script files:
 
