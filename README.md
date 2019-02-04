@@ -1,111 +1,87 @@
-RPi based chilli greenhouse monitor
-===================================
+RPi based chilli seeds greenhouse monitor
+=========================================
 
-newsetup (1.2.2019):
+## Hardware:
 
-install:
+BOM: Raspberry PI, Rpi camera, FPV BEC, 12V white LED strips, 12V cooling fan, NPN transistors, resistors, DHT22 humidity sensor, 12V power supply, seed starter greenhouse 
 
-	# change pasword, update system, enable webcam and ssh
+![Fritzing schematic - colorfull and useless](/doc/schema.png)
+
+## Instalation on Raspbian Stretch (Lite):
+
+Change pasword (but don't forget it).
 
 	passwd
+
+Update system.
+
 	sudo apt-get update
 	sudo apt-get upgrade
+
+Enable camera and ssh, set timezone.
+
 	sudo raspi-config
 
-	# install packages:
-	# git .. get repository
-	# python3_pip .. install python libraries
-	# apache2 .. web server
-	# wiringpi .. switch on - off light and fan
+Install packages.
+
+- git .. get repository
+- python3_pip .. install python libraries
+- apache2 .. web server
+- wiringpi .. switch on - off light and fan
+- did I forget something?
+
 
 	sudo apt-get install git python3_pip apache2 wiringpi
 
-	# install python library (dht)
+Install python dht library using pip.
 
 	sudo pip3 install adafruit_dht
+	
+Clone rpi_chilli (this) repository.
 
-	# get rpi_chilli repository
 	git clone https://github.com/ondrejh/rpi_chilli.git
 
-	# test ios
+Install (copy) web page.
+
+	sudo cp rpi_chilli/www/* /var/www/html/
+
+Test light, fan and camera.
+
 	./lightOn.sh
 	./lightOff.sh
 	./fanOn.sh
 	./fanOff.sh
 
-	# install web pages
-	sudo cp www/* /var/www/html/
-
-	# test webcam (enable in raspi-config first)
 	sudo ./capture.sh	
 
-	# set crontab
+Setup crontab to run scripts automatically.
+
 	sudo crontab -c
+	
 	# add lines:
-	#
-	#   */15 * * * * /home/pi/rpi_chilli/readhumi.py
-	#
-	#   0 6 * * * /home/pi/rpi_chilli/lightOn.sh
-	#   0 21 * * * /home/pi/rpi_chilli/lightOff.sh
 
-	#   0 7,10,13,15,17,19 * * * /home/pi/rpi_chilli/fanOn.sh
-	#   15 7,10,13,15,17,19 * * * /home/pi/rpi_chilli/fanOff.sh
-
-	#   30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
-
-
-files:
-
-	readhumi.py .. read humidity and temperature from DHT sensor and save in into database
-	showdata.py .. get 1 day data from sql and draw the chart
-	plotfile.gp .. plot data gnuplot script
+	*/15 * * * * /home/pi/rpi_chilli/readhumi.py
 	
-	runoften.sh .. run readhumi.py and showdata.py to create fresh chart (called every 5 minutes)
-	capture.sh  .. captures camera picture with time stamp (called every 15 minutes)
-	
-	lightOn.sh  .. turn light on
-	lightOff.sh .. turn light off
-	
-installation steps:
+	0 6 * * * /home/pi/rpi_chilli/lightOn.sh
+	0 21 * * * /home/pi/rpi_chilli/lightOff.sh
+    
+	0 7,10,13,16,19 * * * /home/pi/rpi_chilli/fanOn.sh
+	15 7,10,13,16,19 * * * /home/pi/rpi_chilli/fanOff.sh
 
-1) install AdafruitDHT library:
+	30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
 
-	https://learn.adafruit.com/dht-humidity-sensing-on-raspberry-pi-with-gdocs-logging/wiring
+## Backend script files:
 
-2) install mysql:
+- readhumi.py .. read humidity and temperature from DHT sensor and save in into database
+- capture.sh  .. captures camera picture with time stamp
+- lightOn.sh  .. turn light on
+- lightOff.sh .. turn light off
+- fanOn.sh    .. turn fan on
+- fanOff.sh   .. turn fan off
 
-	#sudo apt-get install mysql-server mysql-client
+## ToDo:
 
-3) create database:
-
-	#mysql -u root -p
-	
-	mysql> create database chilli;
-	mysql> use chilli;
-	mysql> create table logdata (tstamp timestamp, humidity float, temperature float);
-	mysql> quit;
-	
-4) install PyMySQL
-
-	#sudo apt-get intall python-setuptools
-	git clone https://github.com/PyMySQL/PyMySQL.git
-	cd PyMySQL
-	sudo python setup.py install
-	
-5) install apache and create dir for image archive:
-
-	sudo apt-get install apache2
-
-	sudo mkdir /var/www/html/archive
-	
-6) create entry in cron table (to make it run every 5 minutes):
-
-	sudo crontab -e
-
-	insert into the last lines: 
-	
-		*/5 * * * * /home/pi/runoften.sh
-		*/15 * * * * /home/pi/capture.sh
-		
-		30 4 * * * /home/pi/lightOn.sh
-		30 21 * * * /home/pi/lightOff.sh
+- fan PWM
+- dawn, dusk
+- some doc picture
+- simple schematic
