@@ -32,8 +32,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         db_name = sys.argv[1]
 
-        data = dump_db(db_name, table_name)
+    data = dump_db(db_name, table_name)
 
-        for d in data:
-            print("{} {:.2f}% {:.2f}°C".format(d[3], d[2], d[1]))
-        exit()
+    for d in data:
+        print("{} {:.2f}% {:.2f}°C".format(d[3], d[2], d[1]))
