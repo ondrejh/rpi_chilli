@@ -31,11 +31,11 @@ Install packages.
 - git .. get repository
 - python3_pip .. install python libraries
 - apache2 .. web server
+- php, libapache2-mod-php .. php
 - wiringpi .. switch on - off light and fan
-- did I forget something?
 
 
-	sudo apt-get install git python3_pip apache2 wiringpi
+	sudo apt-get install git python3_pip apache2 php libapache2-mod-php wiringpi
 
 Install python dht library using pip.
 
