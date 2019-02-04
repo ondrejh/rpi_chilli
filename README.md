@@ -3,9 +3,13 @@ RPi based chilli seeds greenhouse monitor
 
 ## Hardware:
 
+This is how it looks now:
+
+![Snapshot](doc/snapshot.jpg)
+
 BOM: Raspberry PI, Rpi camera, FPV BEC, 12V white LED strips, 12V cooling fan, NPN transistors, resistors, DHT22 humidity sensor, 12V power supply, seed starter greenhouse 
 
-![Fritzing schematic - colorfull and useless](/doc/schema.png)
+![Fritzing schematic - colorfull and useless](doc/schema.png)
 
 ## Instalation on Raspbian Stretch (Lite):
 
