@@ -36,7 +36,9 @@ Install packages.
 - wiringpi .. switch on - off light and fan
 
 
-	sudo apt-get install git python3_pip apache2 php libapache2-mod-php wiringpi
+	sudo apt-get install git python3_pip
+	sudo apt-get isntall apache2 php libapache2-mod-php php-sqlite3
+	sudo apt-get install wiringpi
 
 Install python dht library using pip.
 
