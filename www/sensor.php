@@ -45,8 +45,8 @@
             ?>
 
             <script>
-                var t1col = '#3366ff';
-                var t2col = '#ff6600';
+                var t1col = '#B21B04';
+                var t2col = '#2E4AA9';
                 var trace1 = {
                     x: [<?php
                         $first = true;
