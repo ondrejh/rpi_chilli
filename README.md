@@ -87,5 +87,5 @@ Setup crontab to run scripts automatically.
 
 - fan PWM
 - dawn, dusk
-- some doc picture
-- simple schematic
+- temperature and humidity chart
+- timelapse video
