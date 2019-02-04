@@ -28,17 +28,16 @@ Enable camera and ssh, set timezone.
 
 Install packages.
 
+	sudo apt-get install git python3_pip
+	sudo apt-get isntall apache2 php libapache2-mod-php php-sqlite3
+	sudo apt-get install wiringpi
+
 - git .. get repository
 - python3_pip .. install python libraries
 - apache2 .. web server
 - php, libapache2-mod-php .. php
 - php-sqlite3 .. sqlite database support for php
 - wiringpi .. switch on - off light and fan
-
-
-	sudo apt-get install git python3_pip
-	sudo apt-get isntall apache2 php libapache2-mod-php php-sqlite3
-	sudo apt-get install wiringpi
 
 Install python dht library using pip.
 
