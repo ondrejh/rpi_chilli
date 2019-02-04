@@ -32,6 +32,7 @@ Install packages.
 - python3_pip .. install python libraries
 - apache2 .. web server
 - php, libapache2-mod-php .. php
+- php-sqlite3 .. sqlite database support for php
 - wiringpi .. switch on - off light and fan
 
 
