@@ -63,11 +63,11 @@ class Control(threading.Thread):
         self.wind_timer = datetime.now()
 
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(22, GPIO.OUT)
         GPIO.setup(27, GPIO.OUT)
-        self.light_pwm = GPIO.PWM(27, 100)
+        GPIO.setup(22, GPIO.OUT)
+        self.light_pwm = GPIO.PWM(27, 50)
         self.light_pwm.start(0)
-        self.wind_pwm = GPIO.PWM(22, 100)
+        self.wind_pwm = GPIO.PWM(22, 20)
         self.wind_pwm.start(0)
 
     def stop(self):
