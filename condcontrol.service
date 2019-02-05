@@ -1,0 +1,10 @@
+[Unit]
+Description=Condition controll service application
+After=syslog.target network.target
+
+[Service]
+Type=idle
+ExecStart=/home/pi/rpi_chilli/condcontrol.py
+
+[Install]
+WantedBy=multi-user.target
