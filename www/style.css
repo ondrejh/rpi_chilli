@@ -92,6 +92,18 @@ img {
 }
 
 
+/* graf */
+.graph {
+	max-width: 800px;
+	margin: 0 auto 60px;
+}
+.graph__inner {
+	box-shadow: 0 0 5px rgba(0,0,0,0.25);
+	border-radius: 10px;
+	border: 3px solid #fff;
+}
+
+
 /* archiv fotek */
 .foto {
 	float: left;
