@@ -11,7 +11,8 @@ except ImportError:
     print("No RPi.GPIO module found. Starting TEST.")
 
     class GPIO(object):
-        BOARD = 'test'
+        BOARD = 'board'
+        BCM = 'bcm'
         OUT = 'out'
 
         def setmode(mode):
@@ -61,7 +62,7 @@ class Control(threading.Thread):
         self.wind_power = 0
         self.wind_timer = datetime.now()
 
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(22, GPIO.OUT)
         GPIO.setup(27, GPIO.OUT)
         self.light_pwm = GPIO.PWM(27, 100)
