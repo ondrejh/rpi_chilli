@@ -5,6 +5,36 @@ from datetime import datetime, timedelta
 from flask import Flask, request, jsonify
 from time import sleep
 
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    print("No RPi.GPIO module found. Starting TEST.")
+
+    class GPIO(object):
+        BOARD = 'test'
+        OUT = 'out'
+
+        def setmode(mode):
+            pass
+
+        def setup(n, mode):
+            pass
+
+        class PWM(object):
+            def __init__(self, n, f):
+                self.pin = n
+                self.frequency = f
+                pass
+
+            def start(self, dc):
+                print('GPIO {} set {}% {}Hz'.format(self.pin, dc, self.frequency))
+
+            def stop(self):
+                print('GPIO {} stop'.format(self.pin))
+
+        def cleanup():
+            pass
+
 
 shared_data = {'light': {'status': 'auto', 'power': 0, 'duration': 'infinite',
                          'dawn': {'begin': '6:00', 'duration': 30},
@@ -31,6 +61,14 @@ class Control(threading.Thread):
         self.wind_power = 0
         self.wind_timer = datetime.now()
 
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(22, GPIO.OUT)
+        GPIO.setup(27, GPIO.OUT)
+        self.light_pwm = GPIO.PWM(27, 100)
+        self.light_pwm.start(0)
+        self.wind_pwm = GPIO.PWM(22, 100)
+        self.wind_pwm.start(0)
+
     def stop(self):
         self.stop_flag = True
 
@@ -43,7 +81,7 @@ class Control(threading.Thread):
                 if new_status != self.data['light']['status']:
                     self.lock.acquire()
                     self.data['light']['status'] = new_status
-                    self.data['light']['duration'] = 'infinite' if new_status=='auto' else '15:00'
+                    self.data['light']['duration'] = 'infinite' if new_status == 'auto' else '15:00'
                     self.lock.release()
                 print('Light status has changed from {} to {}'.format(self.light_status, new_status))
                 if new_status != 'auto':
@@ -104,7 +142,8 @@ class Control(threading.Thread):
                     self.light_power += 1
                 elif self.light_power > light_set:
                     self.light_power -= 1
-                print('Change LIGHT power: {}%'.format(self.light_power))
+                #print('Change LIGHT power: {}%'.format(self.light_power))
+                self.light_pwm.start(self.light_power)
 
             if self.data['light']['power'] != light_set:
                 self.lock.acquire()
@@ -164,7 +203,8 @@ class Control(threading.Thread):
                     self.wind_power += 1
                 elif self.wind_power > wind_set:
                     self.wind_power -= 1
-                print('Change WIND power: {}%'.format(self.wind_power))
+                #print('Change WIND power: {}%'.format(self.wind_power))
+                self.wind_pwm.start(self.wind_power)
 
             if self.data['wind']['power'] != wind_set:
                 self.lock.acquire()
@@ -306,8 +346,6 @@ def set_input():
 
 
 if __name__ == '__main__':
-
-    print(datetime.now())
 
     control = Control()
     control.start()

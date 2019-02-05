@@ -39,9 +39,10 @@ Install packages.
 - php-sqlite3 .. sqlite database support for php
 - wiringpi .. switch on - off light and fan
 
-Install python dht library using pip.
+Install python dht library and flask (micro web framework) using pip.
 
 	sudo pip3 install adafruit_dht
+	sudo pip3 install flask
 	
 Clone rpi_chilli (this) repository.
 
