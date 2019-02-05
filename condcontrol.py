@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 from flask import Flask, request, jsonify
 from time import sleep
 
+fan_pwm_min = 95
+
 try:
     import RPi.GPIO as GPIO
 except ImportError:
@@ -65,9 +67,9 @@ class Control(threading.Thread):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(27, GPIO.OUT)
         GPIO.setup(22, GPIO.OUT)
-        self.light_pwm = GPIO.PWM(27, 50)
+        self.light_pwm = GPIO.PWM(27, 120)
         self.light_pwm.start(0)
-        self.wind_pwm = GPIO.PWM(22, 20)
+        self.wind_pwm = GPIO.PWM(22, 5)
         self.wind_pwm.start(0)
 
     def stop(self):
@@ -205,7 +207,7 @@ class Control(threading.Thread):
                 elif self.wind_power > wind_set:
                     self.wind_power -= 1
                 #print('Change WIND power: {}%'.format(self.wind_power))
-                self.wind_pwm.start(self.wind_power)
+                self.wind_pwm.start(0 if self.wind_power==0 else (fan_pwm_min + self.wind_power/100*(100-fan_pwm_min)))
 
             if self.data['wind']['power'] != wind_set:
                 self.lock.acquire()
