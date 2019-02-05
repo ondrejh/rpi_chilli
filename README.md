@@ -59,7 +59,15 @@ Test light, fan and camera.
 	./fanOn.sh
 	./fanOff.sh
 
-	sudo ./capture.sh	
+	sudo ./capture.sh
+
+Install condition controll service.
+
+	sudo cp condcontrol.service /lib/systemd/system/
+	sudo chmod 644 /lib/systemd/system/condcontrol.service
+	sudo systemctl daemon-reload
+	sudo systemctl enable condcontrol.service
+	sudo systemctl start condcontrol.service
 
 Setup crontab to run scripts automatically.
 
@@ -69,12 +77,6 @@ Setup crontab to run scripts automatically.
 
 	*/15 * * * * /home/pi/rpi_chilli/readhumi.py
 	
-	0 6 * * * /home/pi/rpi_chilli/lightOn.sh
-	0 21 * * * /home/pi/rpi_chilli/lightOff.sh
-    
-	0 7,10,13,16,19 * * * /home/pi/rpi_chilli/fanOn.sh
-	15 7,10,13,16,19 * * * /home/pi/rpi_chilli/fanOff.sh
-
 	30 7,10,13,16,19 * * * /home/pi/rpi_chilli/capture.sh
 
 ## Backend script files:
@@ -85,10 +87,10 @@ Setup crontab to run scripts automatically.
 - lightOff.sh .. turn light off
 - fanOn.sh    .. turn fan on
 - fanOff.sh   .. turn fan off
+- condcontrol.py .. service scrip for gpio pwm with flask interface
+- condcontrol.service .. start file
 
 ## ToDo:
 
-- fan PWM
-- dawn, dusk
-- temperature and humidity chart
+- service setup and web interface
 - timelapse video
