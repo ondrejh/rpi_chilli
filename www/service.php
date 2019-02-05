@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="style.css" media="screen, print" />
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic|Oswald&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="favicon.ico" />
+    <script src="plotly-latest.min.js"></script>
 </head>
 
 <body class="home">
@@ -36,29 +37,78 @@
                 
                 echo "<p>Světlo: ". strtoupper($dlight['status']). " ". $dlight['power']. "%</p>". PHP_EOL;
                 echo "<p>Větrání: ". strtoupper($dwind['status']). " ". $dwind['power']. "%</p>". PHP_EOL;
+
+                function time2hrs($timestring) {
+                    $spl = explode(':', $timestring);
+                    $hrs = $spl[0] + $spl[1] / 60;
+                    return $hrs;
+                }
             
                 $time = strtotime($ddawn['begin']);
-                $dawnbegin = date("H:i", $time);
-                $dawnend = date("H:i", strtotime("+{$ddawn['duration']} minutes", $time));
+                $dawnbegin = time2hrs(date("H:i", $time));
+                $dawnend = time2hrs(date("H:i", strtotime("+{$ddawn['duration']} minutes", $time)));
                 $time = strtotime($ddusk['begin']);
-                $duskbegin = date("H:i", $time);
-                $duskend = date("H:i", strtotime("+{$ddusk['duration']} minutes", $time));
-                echo "<p>L: X = ['00:00', '". $dawnbegin. "', '". $dawnend. "', '". $duskbegin. "', '". $duskend. "', '24:00'], Y = [0, 0, 100, 100, 0, 0]</p>";
-                echo "<p>W: X = ['00:00', '";
-                $last = 0;
-                foreach ($dwind['changes'] as $c) {
-                    echo $c[0]. "', '". $c[0]. "', '";
-                    $last = $c[1];
-                }
-                echo "24:00'], Y = [". $last. ", ";
-                foreach ($dwind['changes'] as $c) {
-                    echo $last. ", ". $c[1]. ", ";
-                    $last = $c[1];
-                }
-                echo $last. "]</p>";
-                
-                var_dump($dlight['dusk'], $dlight['dawn'], $dwind['changes']);
-                
+                $duskbegin = time2hrs(date("H:i", $time));
+                $duskend = time2hrs(date("H:i", strtotime("+{$ddusk['duration']} minutes", $time)));
+            ?>
+            
+            <div id='chart'></div>
+            <script>
+                var t1col = '#B21B04';
+                var t2col = '#2E4AA9';
+                var trace1 = {
+                    x: [<?php
+                        echo "0, ". $dawnbegin. ", ". $dawnend. ", ". $duskbegin. ", ". $duskend. ", 24";
+                        ?>],
+                    y: [0, 0, 100, 100, 0, 0],
+                    name: 'přísvit [%]',
+                    type: 'scatter',
+                    line: {
+                        color: t1col
+                    }
+                };
+                var trace2 = {
+                    x: [<?php
+                        echo "0, ";
+                        $last = 0;
+                        foreach ($dwind['changes'] as $c) {
+                            echo time2hrs($c[0]). ", ". time2hrs($c[0]). ", ";
+                            $last = $c[1];
+                        }
+                        echo "24";
+                        ?>],
+                    y: [<?php
+                        echo $last. ", ";
+                        foreach ($dwind['changes'] as $c) {
+                            echo $last. ", ". $c[1]. ", ";
+                            $last = $c[1];
+                        }
+                        echo $last;
+                        ?>],
+                    name: 'větrání [%]',
+                    type: 'scatter',
+                    line: {
+                        color: t2col
+                    }
+                };
+                var data = [trace1, trace2];
+                var layout = {
+                    xaxis: {
+                        title: 'čas [h]',
+                        range: [0, 24],
+                        autotick: false
+                    },
+                    yaxis: {
+                        title: 'výkon [%]'
+                    },
+                    margin: { t: 0},
+                    showlegend: false
+                };
+                Plotly.newPlot('chart', data, layout);
+
+            </script>
+            
+            <?php
                 // get user info
                 $ip=$_SERVER['REMOTE_ADDR'];
                 $host_name = gethostbyaddr($_SERVER['REMOTE_ADDR']);
