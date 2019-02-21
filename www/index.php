@@ -41,19 +41,39 @@
         </article>
 
         <article class="graph">
-            <h2>Graf teploty a vzdušné vlhkosti</h2>
+            <?php
+                $days = 3;
+                $where_stat = "WHERE timestamp >= datetime('now', '-3 day') ";
+                $days_string = " (3 dny)";
+                if (isset($_GET["days"])) {
+                    $days = intval($_GET["days"]);
+                    if ($days != 0) {
+                        $where_stat = "WHERE timestamp >= datetime('now', '-". $days. " day') ";
+                        if ($days == 1)
+                            $days_string = " (1 den)";
+                        else if ($days < 5)
+                            $days_string = " (". $days. " dny)";
+                        else
+                            $days_string = " (". $days. " dnů)";
+                    }
+                    else if ($days=='ALL') {
+                        $where_stat = "";
+                        $days_string = " (vše)";
+                    }
+                }
+            ?>
+            <h2>Graf teploty a vzdušné vlhkosti <?php echo $days_string; ?></h2>
             <div class="graph__inner">
                 <div id='chart'></div>
+                <p><a href="?days=ALL">vše</a> <a href="?days=7">týden</a> <a href="?days=3">3 dny</a> <a href="?days=1">1 den</a></p>
                 
                 <?php
                     $db = new SQLite3("/var/www/html/sensor.sql");
-                    $query = "SELECT * FROM data ORDER BY timestamp";
+                    $query = "SELECT * FROM data ". $where_stat. "ORDER BY timestamp";
                     $db_data = $db->query($query);
                     $entries = array();
-                    while($row = $db_data->fetchArray()) {
+                    while($row = $db_data->fetchArray())
                         $entries[] = array($row['timestamp'], $row['humidity'], $row['temperature']);
-                    
-                    }
                 ?>
 
                 <script>
