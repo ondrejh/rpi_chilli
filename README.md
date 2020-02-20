@@ -28,7 +28,7 @@ Enable camera and ssh, set timezone.
 
 Install packages.
 
-	sudo apt-get install git python3_pip
+	sudo apt-get install git python3-pip
 	sudo apt-get isntall apache2 php libapache2-mod-php php-sqlite3
 	sudo apt-get install wiringpi
 
