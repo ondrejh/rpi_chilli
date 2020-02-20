@@ -50,7 +50,7 @@ Clone rpi_chilli (this) repository.
 
 Install (copy) web page.
 
-	sudo cp rpi_chilli/www/* /var/www/html/
+	sudo cp -r rpi_chilli/www/* /var/www/html/
 
 Test light, fan and camera.
 
