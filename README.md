@@ -71,7 +71,7 @@ Install condition controll service.
 
 Setup crontab to run scripts automatically.
 
-	sudo crontab -c
+	sudo crontab -e
 	
 	# add lines:
 
