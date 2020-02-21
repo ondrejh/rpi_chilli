@@ -43,6 +43,7 @@ Install python dht library and flask (micro web framework) using pip.
 
 	sudo pip3 install adafruit_dht
 	sudo pip3 install flask
+	sudo pip3 install RPi.GPIO
 	
 Clone rpi_chilli (this) repository.
 
